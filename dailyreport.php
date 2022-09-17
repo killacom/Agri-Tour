@@ -2,12 +2,18 @@
 //DAILY REPORT FOR AGRI-TOURISM RESERVATION SYSTEM
 //HOLDER HILL  VERSION
 //THOMAS PORTER 2018-2021 - THOMAS.PORTER.1991@GMAIL.COM
+
+//check login
 session_start();
-if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true){
+if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('location: login.php');
     exit;
-    }
+}
+
+//includes
 require_once 'config.php';
+
+//variables
 $m = intval(date('n'));
 $d = intval(date('j'));
 $y = intval(date('Y'));
@@ -25,11 +31,16 @@ $season_kids = 0;
 $season_teachers = 0;
 $season_adults = 0;
 $season_reservations = 0;
+$season_season = 0;
+$season_y = $y;
 $tpeople = 0;
+$rescount = 0;
+$reservations = '';
+$next_year_adults = $next_year_kids = $next_year_reservations = $next_year_teachers = 0 ;
+
 
 //use submitted date range if there is one
-$sent = $_POST['sent'];
-if($sent){
+if (isset($_POST['sent'])) {
 	$start_m = intval($_POST['start_month']);
 	$start_d = intval($_POST['start_day']);
 	$start_y = intval($_POST['start_year']);
@@ -37,6 +48,7 @@ if($sent){
 	$end_d = intval($_POST['end_day']);
 	$end_y = intval($_POST['end_year']);
 }
+
 //else use season as date range
 else{
 	if($season_num_day==0){
@@ -142,11 +154,11 @@ if ($result = $link->query($sql)){
 }
 
 //make sure end date is after start date
-if ((($start_m==$end_m && $end_d<$start_d)||($start_m>$end_m && $start_y==$end_y))||$start_y>$end_y){
+if ((($start_m==$end_m && $end_d<$start_d)||($start_m>$end_m && $start_y==$end_y))||$start_y>$end_y) {
     $reservations = '<tr><td colspan=10 align=center><span class=error align=center>The end date cannot be before the start date!</span></td></tr>';
 }
-else{
-	while ($currdate != $end_date){
+else {
+	while ($currdate != $end_date) {
         $daycount = daycount($curr_m); 
         $sql = 'SELECT * FROM reservations WHERE res_year = "'.$curr_y.'" && requested_month = "'.$curr_m.'" && requested_day = "'.$curr_d.'" ORDER BY hr24,arrival_min ASC';  
         if ($result = $link->query($sql)){   
@@ -168,7 +180,7 @@ else{
                     $rescount++;
             }
         }
-        if($rescount > 0){   
+        if($rescount > 0) {   
             $season = season($curr_m, $curr_d);
             $day_of_week = date('l', mktime(0, 0, 0, $curr_m, $curr_d, $curr_y));
             $reservations.='<tr><td colspan=10><table width = 100%>';
@@ -187,10 +199,8 @@ else{
                     <th width=5%>Edit</th>
                     <th width=5%>Delete</th>
                 </tr>';
-            if ($result = $link->query($sql))
-            {
-            while ($row = $result->fetch_assoc()) 
-                {
+            if ($result = $link->query($sql)) {
+                while ($row = $result->fetch_assoc()) {
                     $id = intval($row['id']);
                     $sent_time = $row['sent_time'];
                     $school_name = $row['school_name'];
@@ -228,24 +238,29 @@ else{
                         </td>
                     </tr>'; 
                 }
-            $reservations.='</table></td></tr>';
-            $reservations.='<tr><td colspan=10>&nbsp;</td></tr>';
+            $reservations.='
+                            </table>
+                        </td>
+                    </tr>
+                <tr>
+            <td colspan=10>&nbsp;</td>
+        </tr>
+           ';
             }
-            $rescount=0;
+        $rescount=0;
         }
-    if ($curr_m == 12 && $curr_d == $daycount)
-        {
+    if ($curr_m == 12 && $curr_d == $daycount) { //last day of the year
+            //go to jan 1 of next year
 			$curr_y++;
             $curr_m=1;
             $curr_d=1;
         }
-    elseif ($curr_d == $daycount)
-        {
+    elseif ($curr_d == $daycount) { //last day of month
+            //go to next month
             $curr_m++;
             $curr_d=1;
         }
-    else
-    {
+    else {
         $curr_d++;
     }
     $currdate = $curr_m.'/'.ltrim($curr_d, '0').'/'.$curr_y;
