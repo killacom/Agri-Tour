@@ -2,19 +2,26 @@
 //INTERNAL CONFIGURATION FILE FOR AGRI-TOURISM RESERVATION SYSTEM
 //THOMAS PORTER 2018-2022 - THOMAS.PORTER.1991@GMAIL.COM
 
-require_once './../config/holderhilldbconfig.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+$ROOT = realpath('./../../dbconfig/');
+$dbconfig = $ROOT.'/agritour.php';
+require_once $dbconfig;
 require_once 'fns.php';
 require_once 'texts.php';
+$this_year = intval(date('Y'));
 $sql = "SELECT * FROM `settings` WHERE `index` = 1"; 
 if ($result = $link->query($sql))
 {
     while ($row = $result->fetch_assoc()) 
     {
+        $farm_name = $row['farm_name'];
         $max_kids = intval($row['max_kids']);
         $max_kids_length = strlen(strval($max_kids));
         $day_max_kids = intval($row['day_max_kids']);
         $orange_margin = intval($row['orange_margin']);
-        $from_email = $row['from_email'];
+        //$from_email = $row['from_email'];
         $confirmation_body = $row['confirmation_body'];
         $master_password = $row['master_password'];
         $site_url = $row['site_url'];

@@ -1,7 +1,7 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <title><? echo $pagetitle; ?></title>
+    <title><?php echo $pagetitle; ?></title>
 	<script src="ckeditor/ckeditor.js"></script>
     <script type="text/javascript">
         function returnDate(hour, mins, month, day, year)
