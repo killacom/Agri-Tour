@@ -26,28 +26,40 @@ error_reporting(E_ALL);
     <body>
     <?php 
     require_once 'inc/config.php';
-    $kid_count = $_GET['kid_count'];
-    $kc = intval($kid_count);
+    if (isset($_GET['kid_count'])) {
+        $kid_count = $_GET['kid_count'];
+        $kc = intval($kid_count);
+    }
     $date = time () ; 
     $day = date('d', $date);
-if (isset($_GET['m'])) {$month = $_GET['m'];} else {$month = date('m', $date); }
-if ($month<$spring_opening_month) {$month=$spring_opening_month;}
-if (isset($_GET['y'])) {$year = $_GET['y'];} else {$year = date('Y', $date);}  
-$first_day = mktime(0,0,0,$month, 1, $year); 
-$title = date('F', $first_day); 
-$day_of_week = date('D', $first_day); 
-switch($day_of_week){ 
-case "Sun": $blank = 0; break; 
-case "Mon": $blank = 1; break; 
-case "Tue": $blank = 2; break; 
-case "Wed": $blank = 3; break; 
-case "Thu": $blank = 4; break; 
-case "Fri": $blank = 5; break; 
-case "Sat": $blank = 6; break; 
-}
-$days_in_month = cal_days_in_month(0, $month, $year) ; 
-$day_count = 1;
-?>
+    if (isset($_GET['m'])) {
+        $month = $_GET['m'];
+    } else {
+        $month = date('m', $date); 
+    }
+    if ($month<$spring_opening_month) {
+        $month=$spring_opening_month;
+    }
+    if (isset($_GET['y'])) {
+        $year = $_GET['y'];
+    } else {
+        $year = date('Y', $date);
+    }  
+    $first_day = mktime(0,0,0,$month, 1, $year); 
+    $title = date('F', $first_day); 
+    $day_of_week = date('D', $first_day); 
+    switch($day_of_week) { 
+        case "Sun": $blank = 0; break; 
+        case "Mon": $blank = 1; break; 
+        case "Tue": $blank = 2; break; 
+        case "Wed": $blank = 3; break; 
+        case "Thu": $blank = 4; break; 
+        case "Fri": $blank = 5; break; 
+        case "Sat": $blank = 6; break; 
+    }
+    $days_in_month = cal_days_in_month(0, $month, $year) ; 
+    $day_count = 1;
+    ?>
 <table border=1 cellpadding=0 cellspacing=0>
     <tr>
         <th colspan=7 class="header">
@@ -75,9 +87,8 @@ $day_count = 1;
         <th width=100>Saturday</th>
     </tr>
     <tr height=50 valign=top>
-        <?
-        while ( $blank > 0 ) 
-        { 
+        <?php
+        while ( $blank > 0 ) { 
             echo '<td></td>'; 
             $blank = $blank-1; 
             $day_count++;
