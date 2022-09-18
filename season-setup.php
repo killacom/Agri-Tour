@@ -22,19 +22,29 @@ if ($result = $link->query($sql)){
     $rowcount=mysqli_num_rows($result);
 }
 
+//are we adding seasons?
+if (isset($_POST['add_seasons'])) {
+    $num_seasons_to_add  = $_POST['num_seasons_to_add'];
+    //display form to add seasons
+    $body.= '
+        <form action='.$thisfile.' method="POST">
+            <table>
+    ';
+   for ($a = 0; $a < $num_seasons_to_add; $a++) {
+    $body.= '
+                <tr>
+                    <td>Season '.($a+1).'</td><td><input type="text" name="season'.$a.'name"></td>
+                </tr>
+    ';
+   }
+    $body.= '
+        </table>
+   </form><br><br>';
+} else {
+
 //no seasons detected
 if ($rowcount == 0) {
-    if (isset($_POST['add_seasons'])) {
-        $num_seasons_to_add  = $_POST['num_seasons_to_add'];
-        //display form to add seasons
-        echo $num_seasons_to_add;
-    } else {
-        $body = '
-            No seasons found. Add some? <br>
-            
-        ';
-    }
-
+        $body = 'No seasons found. Add some? <br>';
 } else {
 //or print seasons
 $body =  '
@@ -102,6 +112,8 @@ $body.=  '
     <input type="hidden" name="add_seasons" value="true">
     <input type="submit" value="Go">
     ';
+}
     echo $body;
     require_once 'inc/footer.php';
+
 ?>
