@@ -350,7 +350,7 @@ else {
 }
 mysqli_close($link);
 
-$pagetitle= 'Page Farms Daily Report';
+$pagetitle= 'Daily Report - '.$farm_name;
 require_once 'header.php';
 require_once 'adminnav.php';
 if ($start_y==$y){$syi=0;}
@@ -359,7 +359,7 @@ if ($end_y==$y){$eyi=0;}
 else if ($end_y==($y+1)){$eyi=1;}
 ?>
 <table width=100% align=center>
-        <tr><th class=date colspan=10 ><span id=main>Holder Hill Farms Daily Report</span></th></tr>
+        <tr><th class=date colspan=10 ><span id=main><?php echo $farm_name; ?> Daily Report</span></th></tr>
         <tr><td align=center><div class=ybsm>Hello Farm Staff! <br />Please contact me (Thomas Porter) for any issues or requested updates regarding the reservation system.<br />
 			Phone: 919-699-4841 (Texting preferred) or email at thomas.porter.1991@gmail.com. Thanks!</div></td></tr>
 		<tr><td>&nbsp;</td></tr>
