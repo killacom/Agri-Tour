@@ -1,10 +1,13 @@
 <?php
 //MAKE RESERVATION FOR AGRI-TOURISM RESERVATION SYSTEM
 //THOMAS PORTER 2018-2022 - THOMAS.PORTER.1991@GMAIL.COM
-require_once 'config.php';
-require_once 'texts.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+require_once 'inc/config.php';
+
 $pagetitle = 'Make A Reservation - '.$farm_name;
-require_once 'header.php';
+require_once 'inc/header.php';
 $thisfile = 'make_res.php';
 $timezone = new DateTimeZone( "EST" ); 
 $date = new DateTime(); 

@@ -1,15 +1,18 @@
 <?php
 //SETTINGS PAGE FOR AGRI-TOURISM RESERVATION SYSTEM
 //THOMAS PORTER 2018-2021 - THOMAS.PORTER.1991@GMAIL.COM
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
-require_once 'config.php';
+require_once 'inc/config.php';
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
 $pagetitle='Administrator Settings';
-require_once 'header.php';
-require_once 'adminnav.php';
+require_once 'inc/header.php';
+require_once 'inc/adminnav.php';
 $end_message = '';
 
 if (isset($_POST['sent'])) { 
