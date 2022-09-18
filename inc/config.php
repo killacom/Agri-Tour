@@ -12,16 +12,13 @@ require_once 'fns.php';
 require_once 'texts.php';
 $this_year = intval(date('Y'));
 $sql = "SELECT * FROM `settings` WHERE `index` = 1"; 
-if ($result = $link->query($sql))
-{
-    while ($row = $result->fetch_assoc()) 
-    {
+if ($result = $link->query($sql)) {
+    while ($row = $result->fetch_assoc()) {
         $farm_name = $row['farm_name'];
         $max_kids = intval($row['max_kids']);
         $max_kids_length = strlen(strval($max_kids));
         $day_max_kids = intval($row['day_max_kids']);
         $orange_margin = intval($row['orange_margin']);
-        //$from_email = $row['from_email'];
         $confirmation_body = $row['confirmation_body'];
         $master_password = $row['master_password'];
         $site_url = $row['site_url'];
@@ -44,10 +41,6 @@ if ($result = $link->query($sql))
         $fall_open_min = $row['fall_open_min'];
         $fall_close_hour = $row['fall_close_hour'];
         $fall_close_min = $row['fall_close_min'];
-		//$dr_start_month = $row['dr_start_month'];
-		//$dr_end_month = $row['dr_end_month'];
-		//$dr_start_day = $row['dr_start_day'];
-		//$dr_end_day = $row['dr_end_day'];
     }
     $som = $spring_opening_month;
     $scm = $spring_closing_month;

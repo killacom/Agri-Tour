@@ -11,7 +11,7 @@ if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 }
 
 //includes
-require_once 'config.php';
+require_once 'inc/config.php';
 
 //variables
 $m = intval(date('n'));
@@ -351,8 +351,8 @@ else {
 mysqli_close($link);
 
 $pagetitle= 'Daily Report - '.$farm_name;
-require_once 'header.php';
-require_once 'adminnav.php';
+require_once 'inc/header.php';
+require_once 'inc/adminnav.php';
 if ($start_y==$y){$syi=0;}
 else if ($start_y==($y+1)){$syi=1;}
 if ($end_y==$y){$eyi=0;}
@@ -463,5 +463,5 @@ window.onload = function() {
 };
 </script>
 <?
-require_once 'footer.php';
+require_once 'inc/footer.php';
 ?>
