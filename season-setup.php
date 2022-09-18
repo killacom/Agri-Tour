@@ -10,30 +10,53 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
-$pagetitle='Administrator Settings';
+$thisfile = 'season-setup.php';
+$pagetitle = 'Season Settings';
 require_once 'inc/header.php';
 require_once 'inc/adminnav.php'; 
+$body = '';
 
+//check seasons table
+$sql = 'SELECT * FROM `seasons`';
+if ($result = $link->query($sql)){
+    $rowcount=mysqli_num_rows($result);
+}
 
-echo '
-    <form action="settings.php" method="POST">
+//no seasons detected
+if ($rowcount == 0) {
+    if (isset($_POST['add_seasons'])) {
+        $num_seasons_to_add  = $_POST['num_seasons_to_add'];
+        //display form to add seasons
+        echo $num_seasons_to_add;
+    } else {
+        $body = '
+            No seasons found. Add some? <br>
+            
+        ';
+    }
+
+} else {
+//or print seasons
+$body =  '
+    <form action="'.$thisfile.'" method="POST">
         <table>';
-echo '
+        for ($s = 0; ($s < $num_seasons); $s++) {
+$body.=  '
             <tr>
                 <td>
-                    Spring Opening Date: 
+                    Opening Date: 
                 </td>
                 <td> 
                     <select name=spring_opening_month_new>';
                         for ($i = 1; $i < 12; $i++) {
-                            echo '<option value='.$i;
+                            $body.= '<option value='.$i;
                             if ($spring_opening_month==$i) {
-                                echo ' selected=selected';
+                                $body.= ' selected=selected';
                             }
-                            echo '>'.getmonthname($i).'</option>';
+                            $body.= '>'.getmonthname($i).'</option>';
                         }
-            echo   '</select>
-                    <input type="text" name="spring_opening_day_new" value="'.$spring_opening_day.'" size="2">
+         $body.=   '</select>
+                    <input type="text" name="spring_opening_day_new" value="'.$opening_day.'" size="2">
                 </td>
             </tr>
             <tr>
@@ -43,13 +66,13 @@ echo '
                 <td> 
                     <select name="spring_closing_month_new">';
                     for ($i = 1; $i < 12; $i++) {
-                        echo '<option value='.$i;
+                        $body.= '<option value='.$i;
                         if ($spring_closing_month==$i) {
-                            echo ' selected=selected';
+                            $body.= ' selected=selected';
                         }
-                        echo '>'.getmonthname($i).'</option>';
+                        $body.= '>'.getmonthname($i).'</option>';
                     }
-              echo '</select> 
+            $body.= '</select> 
                     <input type="text" name="spring_closing_day_new" value="'.$spring_closing_day.'" size="2">            
                 </td>
             </tr>
@@ -70,17 +93,15 @@ echo '
                 </td>
             </tr>
 ';
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
+    }
+    $body.= '
+    Number of seasons to add: 
+    <form action='.$thisfile.' method="POST">
+    <input type="text" name="num_seasons_to_add" size="2">
+    <input type="hidden" name="add_seasons" value="true">
+    <input type="submit" value="Go">
+    ';
+    echo $body;
+    require_once 'inc/footer.php';
 ?>
