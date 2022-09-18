@@ -8,7 +8,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
 }
 
 //includes
-require_once "config.php";
+require_once "inc/config.php";
 
 //some variables
 $pagetitle = "Admin Login - ".$farm_name." - Reservation System";
@@ -76,7 +76,7 @@ $body = '
 ';
 
 //display
-require_once 'header.php';
+require_once 'inc/header.php';
 echo $body;
-require_once 'footer.php';
+require_once 'inc/footer.php';
 ?>
