@@ -19,25 +19,13 @@ $d = intval(date('j'));
 $y = intval(date('Y'));
 $season_num_day = season_num_day($m,$d); //get season number of current date
 $date = $m."/".$d.'/'.$y;
-$report_kids = 0;
-$report_teachers = 0;
-$report_adults = 0;
-$report_reservations = 0;
-$year_kids = 0;
-$year_teachers = 0;
-$year_adults = 0;
-$year_reservations = 0;
-$season_kids = 0;
-$season_teachers = 0;
-$season_adults = 0;
-$season_reservations = 0;
-$season_season = 0;
+$report_kids = $report_teachers = $report_adults = $report_reservations = 0;
+$year_kids = $year_teachers = $year_adults = $year_reservations = 0;
+$season_kids = $season_teachers = $season_adults = $season_reservations = $season_season = 0;
 $season_y = $y;
-$tpeople = 0;
-$rescount = 0;
+$tpeople = $rescount = 0;
 $reservations = '';
 $next_year_adults = $next_year_kids = $next_year_reservations = $next_year_teachers = 0 ;
-
 
 //use submitted date range if there is one
 if (isset($_POST['sent'])) {
@@ -51,7 +39,7 @@ if (isset($_POST['sent'])) {
 
 //else use season as date range
 else{
-	if($season_num_day==0){
+	if ($season_num_day==0) {
 		//If current date is before spring opening date, set start date to opening date
 		$start_m = $spring_opening_month;
 		$start_d = $spring_opening_day;
@@ -59,8 +47,7 @@ else{
 		$end_m = $spring_closing_month;
 		$end_d = $spring_closing_day;
 		$end_y = $y;
-	}
-	elseif($season_num_day==1){
+	} elseif ($season_num_day==1) {
 		//current date is during spring season; set start date to today
 		$start_m = $m;
 		$start_d = $d;
@@ -68,8 +55,7 @@ else{
 		$end_m = $spring_closing_month;
 		$end_d = $spring_closing_day;
 		$end_y = $y;
-	}
-	elseif($season_num_day==2){
+	} elseif ($season_num_day==2) {
 		//current date is between spring and fall; start at fall
 		$start_m = $fall_opening_month;
 		$start_d = $fall_opening_day;
@@ -77,8 +63,7 @@ else{
 		$end_m = $fall_closing_month;
 		$end_d = $fall_closing_day;
 		$end_y = $y;
-	}
-	elseif($season_num_day==3){
+	} elseif ($season_num_day==3) {
 		//date is during fall season; start date today
 		$start_m = $fall_opening_month;
 		$start_d = $fall_opening_day;
@@ -86,8 +71,7 @@ else{
 		$end_m = $spring_closing_month;
 		$end_d = $spring_closing_day;
 		$end_y = $y;
-	}
-	elseif($season_num_day==4){
+	} elseif ($season_num_day==4) {
 		//date is after fall, set to spring of next year
 		$start_m = $spring_opening_month;
 		$start_d = $spring_opening_day;
@@ -166,18 +150,18 @@ else {
             $tteachers = 0;
             $tadults = 0;
             while ($row = $result->fetch_assoc()) {
-                    $kids = intval($row['num_children']);
-                    $tkids = $tkids + $kids;
-                    $teachers = intval($row['num_teachers']);
-                    $tteachers = $tteachers + $teachers;
-                    $adults = intval($row['num_adults']);
-                    $tadults = $tadults + $adults;
-                    $tpeople = $tpeople + $tkids + $tteachers + $tadults;
-                    $report_kids = $report_kids + $kids;
-                    $report_teachers = $report_teachers + $teachers;
-                    $report_adults = $report_adults + $adults;
-                    $report_reservations++;
-                    $rescount++;
+                $kids = intval($row['num_children']);
+                $tkids = $tkids + $kids;
+                $teachers = intval($row['num_teachers']);
+                $tteachers = $tteachers + $teachers;
+                $adults = intval($row['num_adults']);
+                $tadults = $tadults + $adults;
+                $tpeople = $tpeople + $tkids + $tteachers + $tadults;
+                $report_kids = $report_kids + $kids;
+                $report_teachers = $report_teachers + $teachers;
+                $report_adults = $report_adults + $adults;
+                $report_reservations++;
+                $rescount++;
             }
         }
         if($rescount > 0) {   
