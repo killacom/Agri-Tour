@@ -25,6 +25,7 @@ if ($result = $link->query($sql)) {
         $admin_email = $row['admin_email'];
         $admin_email_cc = $row['admin_email_cc'];
         $admin_email_bcc = $row['admin_email_bcc'];
+        $num_seasons = $row['num_seasons'];
         $spring_opening_day = $row['spring_opening_day'];
         $spring_opening_month = $row['spring_opening_month'];
         $spring_closing_day = $row['spring_closing_day'];

@@ -88,9 +88,13 @@ if (isset($_POST['sent'])) {
             <tr>
                 <td align=center colspan=2><div class=error><?php echo $end_message; ?></div></td>
             </tr>
+
             <tr>
                 <td align=right><b>Farm Name: </b></td>
                 <td> <input type=text name="farm_name_new" value="<?php echo $farm_name; ?>"></td>
+            </tr>
+            <tr>
+                <td align=center colspan=2><a href="season-setup.php">Season Setup</a></td>
             </tr>
             <tr>
                 <td align=center colspan=2><h3>Spring Hours</h3></td>
