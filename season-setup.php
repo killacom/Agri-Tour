@@ -24,18 +24,17 @@ if ($result = $link->query($sql)){
 
 //are we adding seasons?
 if (isset($_POST['add_seasons'])) {
-    $num_seasons_to_add  = $_POST['num_seasons_to_add'];
+    $num_seasons_to_add  = htmlspecialchars($_POST['num_seasons_to_add']);
     //display form to add seasons
     $body.= '
         <form action='.$thisfile.' method="POST" name="add_seasons_form" id="add_seasons_form">
             <table>
             <tr>
-                <td>Season #</td><td>Season Name</td><td>Opening Date</td><td>Opening Time</td> 
+                <td>Season #</td><td>Season Name</td><td>Opening Date</td><td>Closing Date</td><td>Daily Opening Time</td><td>Closing Time</td>
             </tr>
     ';
    for ($a = 1; $a < $num_seasons_to_add+1; $a++) {
     $body.= '
-                
                 <tr>
                     <td>Season '.$a.'</td>
                     <td><input type="text" name="season'.$a.'name"></td>
@@ -47,6 +46,18 @@ if (isset($_POST['add_seasons'])) {
                 $body.= '</select>
                         <select name="season_'.$a.'_open_day" id="season_'.$a.'_open_day">
                         </select>
+                    </td>
+                    <td>
+                        <select name="season_'.$a.'_close_month" id="season_'.$a.'_close_month">';
+                        for ($rm = 1; $rm < 13; $rm++) {
+                            $body.='<option value="'.$rm.'">'.getmonthname($rm).'</option>';
+                        }
+                $body.= '</select>
+                        <select name="season_'.$a.'_close_day" id="season_'.$a.'_close_day">
+                        </select>
+                    </td>
+                    <td>open time</td>
+                    <td>close time</td>
                 </tr>
     ';
    }
@@ -55,28 +66,45 @@ if (isset($_POST['add_seasons'])) {
     ';
     for ($i = 0; $i < $num_seasons_to_add; $i++) {
         $j=$i+1;
-        
         $onchange.= "
             document.forms['add_seasons_form'].elements['season_".$j."_open_month'].onchange = function(e) {
                 var relName = 'season_".$j."_open_day';
                 var relList = this.form.elements[ relName ];
-                var obj = Select_List_Data".$j."[ relName ][ this.value ];
+                var obj = Select_List_Data".$j."Open[ relName ][ this.value ];
                 removeAllOptions(relList, true);
                 appendDataToSelect(relList, obj);
-            };";
+            };
+            document.forms['add_seasons_form'].elements['season_".$j."_close_month'].onchange = function(e) {
+                var relName = 'season_".$j."_close_day';
+                var relList = this.form.elements[ relName ];
+                var obj = Select_List_Data".$j."Close[ relName ][ this.value ];
+                removeAllOptions(relList, true);
+                appendDataToSelect(relList, obj);
+            };
+        ";
         $monthdata.= "
-            var Select_List_Data".$j." = {
+            var Select_List_Data".$j."Open = {
                 'season_".$j."_open_day': {
+                    ".$month_switcher."
+                }
+            };
+            var Select_List_Data".$j."Close = {
+                'season_".$j."_close_day': {
                     ".$month_switcher."
                 }
             };
         ";
         $onload.= "
-                var sel".$j." = form.elements['season_".$j."_open_month'];
-                var relName".$j." = 'season_".$j."_open_day';
-                var rel".$j." = form.elements[ relName".$j." ];
-                var data".$j." = Select_List_Data".$j."[ relName".$j." ][ sel".$j.".value ];
-                appendDataToSelect(rel".$j.", data".$j.");
+                var sel".$j."Open = form.elements['season_".$j."_open_month'];
+                var relName".$j."Open = 'season_".$j."_open_day';
+                var rel".$j."Open = form.elements[ relName".$j."Open ];
+                var data".$j."Open = Select_List_Data".$j."Open[ relName".$j."Open ][ sel".$j."Open.value ];
+                appendDataToSelect(rel".$j."Open, data".$j."Open);
+                var sel".$j."Close = form.elements['season_".$j."_close_month'];
+                var relName".$j."Close = 'season_".$j."_close_day';
+                var rel".$j."Close = form.elements[ relName".$j."Close ];
+                var data".$j."Close = Select_List_Data".$j."Close[ relName".$j."Close ][ sel".$j."Close.value ];
+                appendDataToSelect(rel".$j."Close, data".$j."Close);
         ";
     }
     $scripts.= $onchange.$monthdata."            
@@ -87,9 +115,6 @@ if (isset($_POST['add_seasons'])) {
 
         </script>
     ";
-
-
-
     $body.= '
         </table>
    </form><br><br>';
